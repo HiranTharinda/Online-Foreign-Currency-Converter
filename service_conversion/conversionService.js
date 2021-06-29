@@ -17,28 +17,36 @@ class ConversionService {
     async convertFromFixer(from, to) {
         try {
             let response = null;
+            //check whether redis is on
             if (process.env.REDIS_STATUS === 'on') {
+                //check whether praviously cached records for this currency pair
                 const currentTime = new Date().getTime()
                 response = await RedisService.hget(
                     'exchange_rates',
                     `rate_${from}_${to}`
                 );
                 if (!response) {
+                    //If this currency pair is not in cache the call the api, get the data, cache it.
                     response = await this.getDataFromFixer(from, to);
-                    if (response && response !== 'fixer_error' && response.success) {
+                    if (response && response != 'fixer_error' && response.success) {
+                        const createdTime = new Date().getTime()
+                        response.createdTime = createdTime
                         await RedisService.hset(
                             'exchange_rates',
                             `rate_${from}_${to}`,
                             response
                         );
                     }
-                } else if (currentTime / 1000 - response.timestamp > 86400) {
+                } else if (currentTime - response.createdTime > 86400000) {
+                    //if the record is avaialable but older than 24hours, then delete the record, call the api and cache it.
                     await RedisService.hdel(
                         'exchange_rates',
                         `rate_${from}_${to}`
                     );
                     response = await this.getDataFromFixer(from, to);
-                    if (response && response !== 'fixer_error') {
+                    if (response && response != 'fixer_error') {
+                        const createdTime = new Date().getTime()
+                        response.createdTime = createdTime
                         await RedisService.hset(
                             'exchange_rates',
                             `rate_${from}_${to}`,
@@ -47,6 +55,7 @@ class ConversionService {
                     }
                 }
             } else {
+                //if redis is off just use the api.
                 response = await this.getDataFromFixer(from, to);
             }
             if (response) {

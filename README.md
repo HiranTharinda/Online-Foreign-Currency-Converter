@@ -18,3 +18,5 @@ I've used
 - `node.js` and `express` for the server
 - `Redis` for in memory caching
 - `axios` as the http client
+
+Note : Since this is a free API, we are only allowed to convert few currecies such as EUR. But we can convert to more than 170 currencies.

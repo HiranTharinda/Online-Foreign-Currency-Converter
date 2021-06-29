@@ -19,7 +19,6 @@ import {
   Option 
 } from '../../styled_component'
 import { convertCurrency } from '../../actions/conversionAction'
-
 import { currencies } from '../../assets/currencySymbols';
 
 function Calculater() {
@@ -27,6 +26,7 @@ function Calculater() {
   const dispatch = useDispatch();
   const result = useSelector(state => state.result)
   const { handleSubmit, register } = useForm()
+
   const [toCurrency, setToCurrency] = useState(null)
   const [amount, setAmount] = useState(null)
   const [calculatedAmount, setCalculatedAmount] = useState(0)
@@ -44,7 +44,7 @@ function Calculater() {
         }
       }
     } else {
-      setCalculatedAmount('Something wrong with the server')
+      setCalculatedAmount(0)
     }
   }, [result])
 
