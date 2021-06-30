@@ -31,8 +31,9 @@ module.exports.convert = async function (req, res) {
 function _validateConvertionData(data) {
     const schema =
         Joi.object({
-            from: Joi.string().required(),
-            to: Joi.string().required()
+            fromCurrency: Joi.string().required(),
+            toCurrency: Joi.string().required(),
+            amount: Joi.number().required()
         })
     return Joi.validate(data, schema);
 }

@@ -4,9 +4,11 @@ const RedisService = require('../service_rediscache/redisService');
 class ConversionService {
     async convertCurrency(data) {
         try {
-            const response = await this.convertFromFixer(data.from, data.to);
-            if (response) {
+            const response = await this.convertFromFixer(data.fromCurrency, data.toCurrency);
+            if (response == 'fixer_error') {
                 return response;
+            } else {
+                return await this.calculateAmount(response, data);
             }
         } catch (e) {
             console.log('conversionService.convertCurrency ' + e);
@@ -74,6 +76,19 @@ class ConversionService {
         } catch (e) {
             console.log('conversionService.getDataFromFixer ' + e);
             return 'fixer_error'
+        }
+    }
+
+    async calculateAmount(response, data) {
+        if (response.success) {
+            const payload = {
+                success: response.success,
+                toCurrency: data.toCurrency,
+                amount: Math.round(response.rates[data.toCurrency] * data.amount)
+            }
+            return payload;
+        } else {
+            return response;
         }
     }
 }

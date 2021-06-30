@@ -26,15 +26,12 @@ function Calculater() {
   const dispatch = useDispatch();
   const result = useSelector(state => state.result)
   const { handleSubmit, register } = useForm()
-
-  const [toCurrency, setToCurrency] = useState(null)
-  const [amount, setAmount] = useState(null)
   const [calculatedAmount, setCalculatedAmount] = useState(0)
 
   useEffect(() => {
     if(result.result && result.result.data){
       if(result.result.data.success){
-          setCalculatedAmount(`${toCurrency} ${Math.round(result.result.data.rates[toCurrency]*amount)}`)
+          setCalculatedAmount(`${result.result.data.toCurrency} ${result.result.data.amount}`)
       } else {
         if(result.result.data.error.code === 101){
           setCalculatedAmount('You have not supplied an API Access Key.')
@@ -49,11 +46,10 @@ function Calculater() {
   }, [result])
 
   const onSubmit = (params) => {
-    setToCurrency(params.to)
-    setAmount(params.amount)
     const formValues = {
-      from: params.from,
-      to: params.to,
+      fromCurrency: params.from,
+      toCurrency: params.to,
+      amount:parseFloat(params.amount)
     }
     dispatch(convertCurrency(formValues));
   }
@@ -99,7 +95,7 @@ function Calculater() {
 
           <CardFieldset>
             <CardInput
-              id='amout'
+              id='amount'
               name='amount'
               {...register("amount")}
               placeholder='amount'
