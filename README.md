@@ -1,10 +1,6 @@
-# Full-Stack Developer, Surge Global
-
 ## Back-end Assignment
 
 Thanks for taking your time to reading this.
-
-Even though it only requires to implement the backend, I added a small client for easier testing.
 
 To run this project,
 
