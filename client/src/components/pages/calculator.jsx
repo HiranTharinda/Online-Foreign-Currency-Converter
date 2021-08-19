@@ -9,17 +9,13 @@ import {
 import { useForm } from 'react-hook-form';
 import { 
   CardWrapper, 
-  CardSelect, 
   CardBody, 
-  CardInput, 
-  CardFieldset, 
-  CardButton, 
   CardHeader, 
   CardHeading, 
-  Option 
 } from '../../styled_component'
 import { convertCurrency } from '../../actions/conversionAction'
-import { currencies } from '../../assets/currencySymbols';
+import Output from '../organisms/output'
+import Input from '../organisms/input';
 
 function Calculater() {
 
@@ -62,62 +58,14 @@ function Calculater() {
       </CardHeader>
 
       <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CardFieldset>
-            <CardSelect
-                {...register("from")}
-              id='from'
-              name='from'
-              placeholder='from'
-              required
-            >
-              <Option value="USD">USD</Option>
-              <Option value="EUR">EUR</Option>
-              <Option value="GBP">GBP</Option>
-              <Option value="LKR">LKR</Option>
-              
-            </CardSelect>
-          </CardFieldset>
-
-          <CardFieldset>
-            <CardSelect
-              id='to'
-              name='to'
-              {...register("to")}
-              placeholder='to'
-              required
-            >
-              {currencies.map(currency => 
-                <option key={currency} value={currency}>{currency}</option>
-              )}
-            </CardSelect>
-          </CardFieldset>
-
-          <CardFieldset>
-            <CardInput
-              id='amount'
-              name='amount'
-              {...register("amount")}
-              placeholder='amount'
-              type='number'
-              required
-            />
-          </CardFieldset>
-
-          <CardFieldset>
-            <CardButton
-              id='button'
-              name='button'
-            type='submit'>
-              Calculate
-            </CardButton>
-          </CardFieldset>
-        </form>
-        <CardHeader>
-          <CardHeading>
-            {calculatedAmount}
-          </CardHeading>
-        </CardHeader>
+          <Input
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            register={register}
+          />
+          <Output
+            calculatedAmount={calculatedAmount} 
+          />
       </CardBody>
     </CardWrapper>
 
