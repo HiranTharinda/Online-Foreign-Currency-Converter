@@ -53,7 +53,7 @@ function Calculater() {
     <CardWrapper>
       <CardHeader>
         <CardHeading>
-          Currency Converter
+          Curreny Converter
         </CardHeading>
       </CardHeader>
 
