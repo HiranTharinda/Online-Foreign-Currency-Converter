@@ -1,4 +1,4 @@
-## Back-end Assignment
+## Online Foreign Currency Converter
 
 Thanks for taking your time to reading this.
 
